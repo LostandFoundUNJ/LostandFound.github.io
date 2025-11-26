@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Datang Kembali</title>
+    <!-- Memuat Tailwind CSS dari CDN untuk styling yang cepat dan responsif -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Konfigurasi Tailwind untuk menggunakan font Inter -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-blue': '#1c7ed6',
+                        'light-blue': '#f0f4ff',
+                        'accent-blue': '#4c66f5',
+                        'soft-gray': '#f5f7fa',
+                    },
+                    backgroundImage: {
+                        // Menggunakan linear-gradient untuk menciptakan pola gelombang seperti di gambar
+                        'wave-bg': "url('data:image/svg+xml;utf8,<svg viewBox=\"0 0 500 500\" xmlns=\"http://www.w3.org/2000/svg\"><defs><linearGradient id=\"a\" x1=\"0\" x2=\"1\" y1=\"0\" y2=\"1\"><stop offset=\"0%\" stop-color=\"%23eef4ff\"/><stop offset=\"100%\" stop-color=\"%23d0e0ff\"/></linearGradient></defs><path fill=\"url(%23a)\" d=\"M433,356c-48-31-86,13-145-21c-59-34-118-102-143-157c-25-55-16-96,31-133c47-37,133-70,195-25c62,45,91,154,124,249c33,95,70,175,72,213c2,38-23,34-66,51c-43,17-91,54-137,28c-46-26-70-120-77-160z\" transform=\"translate(500, 0) scale(-1, 1)\"/></svg>')"
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Mengatur tinggi minimum halaman dan font global */
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f7f9fc; /* Warna latar belakang lembut */
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Styling khusus untuk ikon di dalam input field */
+        .input-icon {
+            position: absolute;
+            left: 0.75rem; /* p-3/px-3 pada Tailwind */
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af; /* gray-400 */
+        }
+
+        /* Styling untuk membuat ilustrasi terlihat seperti di gambar (menggunakan gambar placeholder karena tidak bisa menggunakan gambar dari file lokal) */
+        .illustration-container {
+            background-color: #eef4ff; /* Latar belakang biru muda untuk kontainer */
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Membuat elemen gelombang background (hanya untuk tampilan visual, mirip dengan gambar) */
+        .wave-element {
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background-image: linear-gradient(135deg, #eef4ff 0%, #d0e0ff 100%);
+            border-radius: 50%;
+            top: -50%;
+            right: -50%;
+            transform: rotate(-15deg);
+            z-index: 1;
+            opacity: 0.6;
+        }
+
+        /* Kontainer untuk menjaga rasio aspek ilustrasi */
+        .illustration-content {
+            position: relative;
+            z-index: 10;
+            padding: 2rem;
+        }
+
+        /* Tampilan khusus untuk perangkat seluler */
+        @media (max-width: 768px) {
+            .illustration-container {
+                display: none; /* Sembunyikan ilustrasi di ponsel */
+            }
+            .card-grid {
+                grid-template-columns: 1fr !important;
+                padding: 1rem;
+            }
+            .login-card {
+                max-width: 100%;
+                margin: 0;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            }
+        }
+    </style>
+    <!-- Memuat ikon dari Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+
+<body class="bg-soft-gray">
+
+    <!-- Kontainer Utama Kartu Login -->
+    <div class="login-card w-full max-w-5xl mx-4 my-8 md:mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden transform transition-all duration-300 hover:shadow-3xl">
+
+        <!-- Grid Layout 2 Kolom (Ilustrasi & Form) -->
+        <div class="card-grid grid md:grid-cols-2">
+
+            <!-- Kolom Kiri: Ilustrasi (Sembunyi di Mobile) -->
+            <div class="illustration-container p-8 md:p-12 hidden md:flex items-center justify-center rounded-l-3xl">
+                <div class="wave-element"></div>
+                <div class="illustration-content text-center">
+                    <!-- Menggunakan gambar placeholder yang sederhana untuk mewakili ilustrasi kunci/HP -->
+                    <img src="https://placehold.co/400x350/e0ecff/2563eb?text=Mobile+Security" alt="Ilustrasi Keamanan Mobile" class="mx-auto w-full max-w-xs h-auto object-contain transition-transform duration-500 hover:scale-[1.02]">
+                    <h2 class="mt-8 text-xl font-semibold text-primary-blue">Kunci Aman Data Anda</h2>
+                    <p class="text-sm text-gray-600 mt-2">Masuk untuk mengakses layanan premium dan data terenkripsi Anda.</p>
+                </div>
+            </div>
+
+            <!-- Kolom Kanan: Formulir Login -->
+            <div class="p-8 md:p-12">
+                <h1 class="text-2xl md:text-3xl font-bold text-gray-800 text-center">Welcome!</h1>
+                <p class="text-gray-500 text-center mt-2 mb-8">Sign in to your Account</p>
+
+                <form id="loginForm" class="space-y-6">
+                    
+                    <!-- Input Email -->
+                    <div class="relative">
+                        <input type="email" id="email" placeholder="Email Address" required
+                               class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition duration-150 text-sm">
+                        <div class="input-icon">
+                            <!-- Icon Mail -->
+                            <i data-lucide="mail" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+
+                    <!-- Input Password -->
+                    <div class="relative">
+                        <input type="password" id="password" placeholder="Password" required
+                               class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition duration-150 text-sm">
+                        <div class="input-icon">
+                            <!-- Icon Lock -->
+                            <i data-lucide="lock" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+
+                    <!-- Lupa Kata Sandi -->
+                    <div class="flex justify-end">
+                        <a href="#" class="text-sm font-medium text-primary-blue hover:text-accent-blue transition duration-150">
+                            Forgot Password?
+                        </a>
+                    </div>
+
+                    <!-- Tombol Aksi -->
+                    <div class="flex space-x-4 pt-4">
+                        <!-- Tombol Sign In -->
+                        <button type="submit"
+                                class="flex-1 px-6 py-3 bg-primary-blue text-white font-semibold rounded-xl shadow-md shadow-primary-blue/30 hover:bg-accent-blue transition duration-300 transform hover:scale-[1.02]">
+                            SIGN IN
+                        </button>
+                        <!-- Tombol Sign Up -->
+                        <button type="button"
+                                class="flex-1 px-6 py-3 border-2 border-primary-blue text-primary-blue font-semibold rounded-xl hover:bg-light-blue transition duration-300">
+                            SIGN UP
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Pemisah "OR LOGIN WITH" -->
+                <div class="flex items-center my-8">
+                    <hr class="flex-grow border-gray-300">
+                    <span class="px-3 text-gray-500 text-xs font-semibold tracking-wider">OR LOGIN WITH</span>
+                    <hr class="flex-grow border-gray-300">
+                </div>
+
+                <!-- Opsi Login Sosial -->
+                <div class="flex justify-center space-x-6">
+                    <a href="#" class="p-3 border border-gray-300 rounded-full hover:border-accent-blue transition duration-150">
+                        <i data-lucide="facebook" class="w-6 h-6 text-[#1877F2]"></i>
+                    </a>
+                    <a href="#" class="p-3 border border-gray-300 rounded-full hover:border-accent-blue transition duration-150">
+                        <i data-lucide="mail" class="w-6 h-6 text-[#DB4437]"></i> <!-- Mengganti G dengan Mail, karena Google tidak ada ikonnya di Lucide -->
+                    </a>
+                    <a href="#" class="p-3 border border-gray-300 rounded-full hover:border-accent-blue transition duration-150">
+                        <i data-lucide="linkedin" class="w-6 h-6 text-[#0A66C2]"></i>
+                    </a>
+                </div>
+
+                <!-- Area Pesan (sebagai pengganti alert) -->
+                <div id="messageBox" class="mt-6 p-3 text-center text-sm rounded-lg hidden"></div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Script JavaScript -->
+    <script>
+        // Menginisialisasi ikon dari Lucide
+        lucide.createIcons();
+
+        // Fungsi untuk menangani submit form
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Mencegah form untuk submit secara default
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const messageBox = document.getElementById('messageBox');
+
+            // Tampilkan pesan sukses/gagal di UI (bukan alert)
+            messageBox.classList.remove('hidden', 'bg-red-100', 'text-red-700', 'bg-green-100', 'text-green-700');
+
+            if (email && password) {
+                // Simulasi proses login
+                messageBox.textContent = `Berhasil! Mencoba login dengan email: ${email}`;
+                messageBox.classList.add('bg-green-100', 'text-green-700');
+            } else {
+                messageBox.textContent = 'Harap masukkan Email dan Password.';
+                messageBox.classList.add('bg-red-100', 'text-red-700');
+            }
+        });
+
+        // Mengganti ikon 'mail' menjadi 'search' untuk Google agar lebih jelas di bagian login sosial
+        document.addEventListener('DOMContentLoaded', () => {
+             // Temukan semua ikon dan ganti ikon mail kedua menjadi search untuk Google
+            const socialIcons = document.querySelectorAll('.social-login-icon');
+            // Karena Lucide tidak punya ikon Google secara spesifik, kita bisa ganti 'mail' (yang di atas) dengan ikon lain
+            // Saya telah mengubah ikon Google secara langsung di HTML menjadi ikon 'mail' dengan warna merah (#DB4437).
+            // Jika Anda ingin ikon yang lebih umum, Anda bisa menggunakan 'search' atau 'globe'.
+        });
+
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost & Found UNJ - Lapor dan Temukan Barang</title>
+    <!-- Memuat Tailwind CSS untuk styling modern dan responsif -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- PERBAIKAN: Mengimpor ikon Lucide secara individu. 
+         Modul Lucide @latest tidak menyediakan ekspor bernama Bell, Search, dll. 
+         Solusinya adalah memuat script Lucide.js dan menggunakan fungsi lucide.createIcons(). -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script>
+        // Panggil createIcons setelah Lucide dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+        });
+    </script>
+    
+    <style>
+        /* Menggunakan font Inter */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f7;
+        }
+        /* Style kustom untuk tombol utama berwarna oranye */
+        .btn-primary {
+            background-color: #ff6e20; /* Warna oranye utama */
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #e55a16; /* Sedikit lebih gelap saat hover */
+        }
+        /* Style kustom untuk header (warna oranye) */
+        .header-bg {
+            background-color: #ff8c42; /* Warna latar belakang header */
+        }
+        /* Overlay untuk interaksi tombol */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .message-box {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            max-width: 90%;
+            width: 400px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Overlay Pesan Interaktif -->
+    <div id="messageOverlay" class="overlay">
+        <div class="message-box">
+            <h3 class="text-xl font-bold mb-4 text-gray-800" id="messageTitle">Aksi Dilakukan!</h3>
+            <p class="text-gray-600 mb-6" id="messageContent">Ini adalah simulasi interaksi. Tombol ini berfungsi!</p>
+            <button onclick="closeMessage()" class="btn-primary text-white py-2 px-4 rounded-lg font-semibold shadow-md hover:shadow-lg">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Header / Navbar Section -->
+    <header class="header-bg shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            
+            <!-- Logo -->
+            <div class="flex items-center space-x-2">
+                <img src="https://placehold.co/40x40/ffcc00/000?text=L&F" alt="Lost & Found Logo" class="rounded-full">
+                <span class="text-2xl font-extrabold text-white tracking-tight">Lost & Found</span>
+            </div>
+
+            <!-- Navigasi Utama -->
+            <nav class="hidden md:flex items-center space-x-6">
+                <!-- Tombol Navigasi -->
+                <a href="#" onclick="showInteractionMessage('Beranda')" class="text-white font-semibold text-lg py-2 px-4 rounded-lg bg-[#ff6e20] shadow-md hover:bg-[#e55a16] transition duration-200">BERANDA</a>
+                <a href="#" onclick="showInteractionMessage('About Us')" class="text-white font-medium hover:text-gray-200 transition duration-200">ABOUT US</a>
+                <a href="#" onclick="showInteractionMessage('FAQ')" class="text-white font-medium hover:text-gray-200 transition duration-200">FAQ</a>
+                <a href="#" onclick="showInteractionMessage('Bantuan')" class="text-yellow-300 hover:text-yellow-400 transition duration-200"><i data-lucide="help-circle" class="w-6 h-6"></i></a>
+            </nav>
+
+            <!-- Tombol Aksi Kanan -->
+            <div class="flex items-center space-x-3">
+                <button onclick="showInteractionMessage('Notifikasi')" class="text-yellow-300 hover:text-yellow-400 transition duration-200 md:hidden block">
+                    <i data-lucide="bell" class="w-6 h-6"></i>
+                </button>
+                <button onclick="showInteractionMessage('Login')" class="bg-white text-[#ff6e20] font-bold py-2 px-5 rounded-full shadow-lg hover:bg-gray-100 transition duration-200">LOGIN</button>
+                <button onclick="showInteractionMessage('Sign Up')" class="btn-primary text-white font-bold py-2 px-5 rounded-full shadow-lg hover:shadow-xl transition duration-200">SIGN UP</button>
+                <button onclick="showInteractionMessage('Notifikasi')" class="text-yellow-300 hover:text-yellow-400 transition duration-200 hidden md:block">
+                    <i data-lucide="bell" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="header-bg py-16 sm:py-24 lg:py-32">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            
+            <!-- Banner Khusus Mahasiswa -->
+            <div class="inline-block py-2 px-6 mb-8 bg-yellow-400/90 text-white font-bold text-lg rounded-full shadow-xl">
+                Platform Khusus Mahasiswa UNJ
+            </div>
+
+            <!-- Judul Utama -->
+            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-4 uppercase">
+                LAPORKAN & TEMUKAN <br> BARANG MU
+            </h1>
+            
+            <!-- Subtitle -->
+            <p class="text-xl sm:text-2xl text-white font-light mb-12 max-w-3xl mx-auto">
+                Platform eksekutif untuk mahasiswa Universitas Negeri Jakarta dalam melaporkan & menemukan barang
+            </p>
+
+            <!-- Search Bar Interaktif -->
+            <div class="flex justify-center">
+                <div class="w-full max-w-4xl bg-white p-2 rounded-full shadow-2xl flex items-center">
+                    
+                    <!-- Kolom Input Pencarian -->
+                    <div class="flex items-center flex-grow py-2 px-6">
+                        <i data-lucide="search" class="w-6 h-6 text-gray-400 mr-3"></i>
+                        <input id="searchInput" type="text" placeholder="laporkan & Cari Barang" class="w-full text-lg text-gray-700 focus:outline-none placeholder-gray-400" />
+                    </div>
+
+                    <!-- Tombol Cari -->
+                    <button onclick="performSearch()" class="btn-primary text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl flex-shrink-0">
+                        Cari Sekarang
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-white pt-12 pb-6 border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
+                
+                <!-- Kolom 1: Logo dan Slogan -->
+                <div class="space-y-4">
+                    <div class="flex items-center justify-center md:justify-start space-x-2">
+                        <img src="https://placehold.co/30x30/ffcc00/000?text=L&F" alt="Lost & Found Logo" class="rounded-full">
+                        <span class="text-xl font-extrabold text-[#ff6e20] tracking-tight">Lost & Found</span>
+                    </div>
+                    <p class="text-gray-700 font-semibold text-lg">Temukan, Kembalikan & Terhubung</p>
+                </div>
+
+                <!-- Kolom 2: Tautan Cepat -->
+                <div>
+                    <h4 class="text-lg font-bold text-gray-800 mb-4">Quick Link</h4>
+                    <ul class="space-y-2 text-gray-600">
+                        <li><a href="#" onclick="showInteractionMessage('Tautan Beranda')" class="hover:text-[#ff6e20] transition duration-200">Beranda</a></li>
+                        <li><a href="#" onclick="showInteractionMessage('Tautan About Us')" class="hover:text-[#ff6e20] transition duration-200">About us</a></li>
+                        <!-- Tambahkan tautan lain jika perlu -->
+                    </ul>
+                </div>
+
+                <!-- Kolom 3: Kontak -->
+                <div>
+                    <h4 class="text-lg font-bold text-gray-800 mb-4">Kontak</h4>
+                    <address class="text-gray-600 not-italic space-y-1">
+                        <p>Jl. Rawamangun, Jakarta Timur</p>
+                        <p>Universitas Negeri Jakarta</p>
+                    </address>
+                </div>
+
+                <!-- Kolom 4: Placeholder untuk kolom lain (Opsional) -->
+                <div class="hidden md:block">
+                </div>
+
+            </div>
+
+            <!-- Hak Cipta -->
+            <div class="mt-10 pt-6 border-t border-gray-200 text-center text-sm text-gray-500">
+                © 2025 - Universitas Negeri Jakarta. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /**
+         * Fungsi untuk menampilkan kotak pesan simulasi interaksi.
+         * @param {string} action Aksi yang dilakukan (misalnya, "Login", "Beranda", "Cari").
+         * @param {string} detail Detail tambahan untuk konten pesan.
+         */
+        function showInteractionMessage(action, detail = '') {
+            const messageTitle = document.getElementById('messageTitle');
+            const messageContent = document.getElementById('messageContent');
+            const overlay = document.getElementById('messageOverlay');
+
+            let contentText = `Anda menekan tombol **${action}**.`;
+            if (detail) {
+                contentText += ` Konten yang Anda masukkan: **"${detail}"**.`;
+            } else {
+                contentText += ` Ini adalah simulasi, aksi navigasi atau fungsionalitas lanjutan akan diimplementasikan pada tahap selanjutnya.`;
+            }
+
+            messageTitle.innerHTML = action;
+            messageContent.innerHTML = contentText;
+            overlay.style.display = 'flex';
+        }
+
+        /**
+         * Fungsi yang dipanggil saat tombol "Cari Sekarang" ditekan.
+         */
+        function performSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const query = searchInput.value.trim();
+
+            if (query === "") {
+                showInteractionMessage('Pencarian', 'Kolom pencarian kosong. Silakan masukkan kata kunci.');
+            } else {
+                showInteractionMessage('Pencarian', query);
+                searchInput.value = ''; // Kosongkan input setelah simulasi pencarian
+            }
+        }
+
+        /**
+         * Fungsi untuk menutup kotak pesan simulasi.
+         */
+        function closeMessage() {
+            document.getElementById('messageOverlay').style.display = 'none';
+        }
+
+        // Tambahkan event listener untuk tombol Enter di kolom pencarian
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+    </script>
+
+</body>
+</html>
